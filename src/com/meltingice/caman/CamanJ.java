@@ -1,5 +1,5 @@
 /**
- * 
+ * CamanJ is a loose Java port of the CamanJS image manipulation library (originally written in Javascript).
  */
 package com.meltingice.caman;
 
@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 import com.meltingice.caman.exceptions.InvalidArgument;
 
 /**
- * @author rlefevre
+ * @author Ryan LeFevre
  * 
  */
 public class CamanJ {
@@ -26,7 +26,7 @@ public class CamanJ {
 		} catch (IOException e) {
 			System.err.println("CamanJ: Unable to load image from file");
 		}
-		
+
 		this.plugins = new HashMap<String, CamanPlugin>();
 	}
 
@@ -84,10 +84,7 @@ public class CamanJ {
 		BufferedImage dest = this.save();
 		File file = new File(outFile);
 		try {
-			ImageIO.write(
-					dest,
-					"png",
-					file);
+			ImageIO.write(dest, "png", file);
 		} catch (IOException e) {
 			System.err.println("CamanJ: error writing to file "
 					+ file.getName());

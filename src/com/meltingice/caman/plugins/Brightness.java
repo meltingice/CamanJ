@@ -14,14 +14,6 @@ import com.meltingice.caman.exceptions.InvalidArgument;
 public class Brightness implements CamanPlugin {
 
 	/* (non-Javadoc)
-	 * @see com.meltingice.caman.CamanPlugin#name()
-	 */
-	@Override
-	public String name() {
-		return "brightness";
-	}
-
-	/* (non-Javadoc)
 	 * @see com.meltingice.caman.CamanPlugin#process(java.lang.Object)
 	 */
 	@Override
