@@ -45,4 +45,12 @@ public class CamanUtil {
 			(double) rgb[3]
 		};
 	}
+	
+	public static String getFilterName(String input) {
+		if (input.length() == 0) {
+			return input;
+		}
+		
+		return Character.toUpperCase(input.charAt(0)) + input.substring(1);
+	}
 }

@@ -47,7 +47,8 @@ public class CamanJ {
 			return plugins.get(name);
 		}
 
-		Class c1 = Class.forName("com.meltingice.caman.filters." + name);
+		Class c1 = Class.forName("com.meltingice.caman.filters."
+				+ CamanUtil.getFilterName(name));
 		CamanFilter plugin = (CamanFilter) c1.newInstance();
 
 		System.out.println("CamanJ: loaded filter " + name);
@@ -64,15 +65,19 @@ public class CamanJ {
 	 *            The adjustment amount
 	 * @return This object (for chaining purposes)
 	 */
-	public CamanJ applyFilter(String name, double value) {
+	public CamanJ applyFilter(String name, double... value) {
 		try {
 			CamanFilter plugin = loadFilter(name);
 
 			for (int i = 0; i < image.getWidth(); i++) {
 				for (int j = 0; j < image.getHeight(); j++) {
 					try {
-						image.pixels[i][j] = plugin.process(image.pixels[i][j],
-								value);
+						if (value.length == 0) {
+							image.pixels[i][j] = plugin.process(image.pixels[i][j]);
+						} else if (value.length == 1) {
+							image.pixels[i][j] = plugin.process(image.pixels[i][j], value[0]);
+						}
+						
 					} catch (InvalidArgument e) {
 						System.err.println("CamanJ: invalid arguments to "
 								+ name + " plugin");

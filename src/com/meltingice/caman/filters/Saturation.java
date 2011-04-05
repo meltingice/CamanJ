@@ -1,26 +1,32 @@
+/**
+ * 
+ */
 package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
 import com.meltingice.caman.CamanUtil;
 import com.meltingice.caman.exceptions.InvalidArgument;
 
-public class Contrast extends CamanFilter {
-
+/**
+ * @author Ryan LeFevre
+ *
+ */
+public class Saturation extends CamanFilter {
+	
 	@Override
 	public int[] process(int[] rgb, double arg) throws InvalidArgument {
-		arg = (arg + 100) / 100;
-		arg = Math.pow(arg, 2);
+		arg *= -0.01;
 		
-		double[] drgb = CamanUtil.toDouble(rgb);
+		int max = Math.max(Math.max(rgb[0], rgb[1]), rgb[2]);
+		int diff;
 		
 		for (int i = 0; i < 3; i++) {
-			drgb[i] /= 255;
-			drgb[i] -= 0.5;
-			drgb[i] *= arg;
-			drgb[i] += 0.5;
-			drgb[i] *= 255;
+			if (rgb[i] != max) {
+				diff = max - rgb[i];
+				rgb[i] += diff * arg;
+			}
 		}
 		
-		return CamanUtil.clampRGB(drgb);
+		return CamanUtil.clampRGB(rgb);
 	}
 }
