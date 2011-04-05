@@ -6,14 +6,14 @@ Suggestions and contributions are welcome, although suggestions would probably b
 
 ## Example Usage
 
-  // Load CamanJ with our image
-  CamanJ caman = new CamanJ("images/example1.jpg");
+    // Load CamanJ with our image
+    CamanJ caman = new CamanJ("images/example1.jpg");
   
-  // Apply the brightness filter
-  caman.apply("Brightness", 50);
+    // Apply the brightness filter
+    caman.apply("Brightness", 50);
   
-  // Output the modified image to a new file
-  caman.save("output/example1.png");
+    // Output the modified image to a new file
+    caman.save("output/example1.png");
 
 ## Goals
 
