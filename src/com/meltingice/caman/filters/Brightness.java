@@ -1,17 +1,17 @@
 /**
  * 
  */
-package com.meltingice.caman.plugins;
+package com.meltingice.caman.filters;
 
-import com.meltingice.caman.CamanPlugin;
+import com.meltingice.caman.CamanFilter;
 import com.meltingice.caman.CamanUtil;
 import com.meltingice.caman.exceptions.InvalidArgument;
 
 /**
- * @author ryanlefevre
+ * @author Ryan LeFevre
  *
  */
-public class Brightness implements CamanPlugin {
+public class Brightness implements CamanFilter {
 
 	/* (non-Javadoc)
 	 * @see com.meltingice.caman.CamanPlugin#process(java.lang.Object)

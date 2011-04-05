@@ -18,7 +18,7 @@ import com.meltingice.caman.exceptions.InvalidArgument;
  */
 public class CamanJ {
 	private Image image;
-	private HashMap<String, CamanPlugin> plugins;
+	private HashMap<String, CamanFilter> plugins;
 
 	public CamanJ(String file) {
 		try {
@@ -27,26 +27,46 @@ public class CamanJ {
 			System.err.println("CamanJ: Unable to load image from file");
 		}
 
-		this.plugins = new HashMap<String, CamanPlugin>();
+		this.plugins = new HashMap<String, CamanFilter>();
 	}
 
-	private CamanPlugin loadPlugin(String name) throws InstantiationException,
+	/**
+	 * Lazy-loads a filter using reflection and caches the object instance so
+	 * reflection is only used once per filter.
+	 * 
+	 * @param name
+	 *            The name of the filter to instantiate
+	 * @return The CamanFilter object
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
+	private CamanFilter loadFilter(String name) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
 		if (plugins.containsKey(name)) {
 			return plugins.get(name);
 		}
 
-		Class c1 = Class.forName("com.meltingice.caman.plugins." + name);
-		CamanPlugin plugin = (CamanPlugin) c1.newInstance();
+		Class c1 = Class.forName("com.meltingice.caman.filters." + name);
+		CamanFilter plugin = (CamanFilter) c1.newInstance();
 
-		System.out.println("CamanJ: loaded plugin " + name);
+		System.out.println("CamanJ: loaded filter " + name);
 		plugins.put(name, plugin);
 		return plugin;
 	}
 
-	public CamanJ apply(String name, double value) {
+	/**
+	 * Applies a filter with the given name to the image.
+	 * 
+	 * @param name
+	 *            The name of the filter
+	 * @param value
+	 *            The adjustment amount
+	 * @return This object (for chaining purposes)
+	 */
+	public CamanJ applyFilter(String name, double value) {
 		try {
-			CamanPlugin plugin = loadPlugin(name);
+			CamanFilter plugin = loadFilter(name);
 
 			for (int i = 0; i < image.getWidth(); i++) {
 				for (int j = 0; j < image.getHeight(); j++) {
@@ -68,6 +88,11 @@ public class CamanJ {
 		return this;
 	}
 
+	/**
+	 * Saves the modified image to a new BufferedImage object
+	 * 
+	 * @return The new BufferedImage object
+	 */
 	public BufferedImage save() {
 		BufferedImage dest = image.getDestImage();
 
@@ -80,6 +105,12 @@ public class CamanJ {
 		return dest;
 	}
 
+	/**
+	 * Saves the modified image to a file.
+	 * 
+	 * @param outFile
+	 *            The path to the output file.
+	 */
 	public void save(String outFile) {
 		BufferedImage dest = this.save();
 		File file = new File(outFile);

@@ -11,7 +11,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * @author rlefevre
+ * @author Ryan LeFevre
  *
  */
 public class Image {
