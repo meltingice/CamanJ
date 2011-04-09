@@ -12,14 +12,13 @@ import com.meltingice.caman.CamanUtil;
  */
 public class Brightness extends CamanFilter {
 
-	/* (non-Javadoc)
-	 * @see com.meltingice.caman.CamanPlugin#process(java.lang.Object)
-	 */
 	@Override
-	public int[] process(int[] rgb, double arg) {
-		rgb[0] += arg;
-		rgb[1] += arg;
-		rgb[2] += arg;
+	public int[] process(int[] rgb) {
+		int param = (Integer) params.get(0);
+		
+		rgb[0] += param;
+		rgb[1] += param;
+		rgb[2] += param;
 		
 		return CamanUtil.clampRGB(rgb);
 	}

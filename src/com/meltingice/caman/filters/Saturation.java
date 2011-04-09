@@ -5,7 +5,6 @@ package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
 import com.meltingice.caman.CamanUtil;
-import com.meltingice.caman.exceptions.InvalidArgument;
 
 /**
  * @author Ryan LeFevre
@@ -14,7 +13,8 @@ import com.meltingice.caman.exceptions.InvalidArgument;
 public class Saturation extends CamanFilter {
 	
 	@Override
-	public int[] process(int[] rgb, double arg) throws InvalidArgument {
+	public int[] process(int[] rgb) {
+		Double arg = (Double) params.get(0);
 		arg *= -0.01;
 		
 		int max = Math.max(Math.max(rgb[0], rgb[1]), rgb[2]);

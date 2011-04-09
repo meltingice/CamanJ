@@ -6,11 +6,9 @@ package com.meltingice.caman;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
-
-import com.meltingice.caman.exceptions.InvalidArgument;
 
 /**
  * @author Ryan LeFevre
@@ -18,7 +16,8 @@ import com.meltingice.caman.exceptions.InvalidArgument;
  */
 public class CamanJ {
 	private Image image;
-	private HashMap<String, CamanFilter> plugins;
+	private LinkedList<CamanFilter> filters;
+	private boolean isRendered = false;
 
 	public CamanJ(String file) {
 		try {
@@ -27,7 +26,7 @@ public class CamanJ {
 			System.err.println("CamanJ: Unable to load image from file");
 		}
 
-		this.plugins = new HashMap<String, CamanFilter>();
+		this.filters = new LinkedList<CamanFilter>();
 	}
 
 	/**
@@ -43,17 +42,24 @@ public class CamanJ {
 	 */
 	private CamanFilter loadFilter(String name) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
-		if (plugins.containsKey(name)) {
-			return plugins.get(name);
-		}
 
 		Class c1 = Class.forName("com.meltingice.caman.filters."
 				+ CamanUtil.getFilterName(name));
 		CamanFilter plugin = (CamanFilter) c1.newInstance();
 
 		System.out.println("CamanJ: loaded filter " + name);
-		plugins.put(name, plugin);
+		filters.add(plugin);
 		return plugin;
+	}
+
+	public CamanFilter filter(String name) {
+		try {
+			CamanFilter plugin = loadFilter(name);
+			return plugin;
+		} catch (Exception e) {
+			System.err.println("CamanJ: Invalid filter name");
+			return null;
+		}
 	}
 
 	/**
@@ -65,32 +71,14 @@ public class CamanJ {
 	 *            The adjustment amount
 	 * @return This object (for chaining purposes)
 	 */
-	public CamanJ applyFilter(String name, double... value) {
-		try {
-			CamanFilter plugin = loadFilter(name);
-
+	public void render() {
+		for (CamanFilter filter : filters) {
 			for (int i = 0; i < image.getWidth(); i++) {
 				for (int j = 0; j < image.getHeight(); j++) {
-					try {
-						if (value.length == 0) {
-							image.pixels[i][j] = plugin.process(image.pixels[i][j]);
-						} else if (value.length == 1) {
-							image.pixels[i][j] = plugin.process(image.pixels[i][j], value[0]);
-						}
-						
-					} catch (InvalidArgument e) {
-						System.err.println("CamanJ: invalid arguments to "
-								+ name + " plugin");
-						return this;
-					}
+					image.pixels[i][j] = filter.process(image.pixels[i][j]);
 				}
 			}
-		} catch (Exception e) {
-			System.err.println("Error executing plugin " + name);
-			e.printStackTrace();
 		}
-
-		return this;
 	}
 
 	/**
@@ -99,6 +87,10 @@ public class CamanJ {
 	 * @return The new BufferedImage object
 	 */
 	public BufferedImage save() {
+		if (!isRendered) {
+			render();
+		}
+		
 		BufferedImage dest = image.getDestImage();
 
 		for (int i = 0; i < image.getWidth(); i++) {
@@ -117,6 +109,10 @@ public class CamanJ {
 	 *            The path to the output file.
 	 */
 	public void save(String outFile) {
+		if (!isRendered) {
+			render();
+		}
+		
 		BufferedImage dest = this.save();
 		File file = new File(outFile);
 		try {

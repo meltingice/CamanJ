@@ -2,12 +2,12 @@ package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
 import com.meltingice.caman.CamanUtil;
-import com.meltingice.caman.exceptions.InvalidArgument;
 
 public class Contrast extends CamanFilter {
 
-	@Override
-	public int[] process(int[] rgb, double arg) throws InvalidArgument {
+	public int[] process(int[] rgb) {
+		Double arg = (Double) params.get(0);
+		
 		arg = (arg + 100) / 100;
 		arg = Math.pow(arg, 2);
 		
