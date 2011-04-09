@@ -1,5 +1,12 @@
 /**
- * CamanJ is a loose Java port of the CamanJS image manipulation library (originally written in Javascript).
+ * CamanJ - Java Image Manipulation
+ * Ported from the CamanJS Javascript library
+ *
+ * Copyright 2011, Ryan LeFevre
+ * Licensed under the new BSD License
+ * See LICENSE for more info.
+ * 
+ * Project Home: http://github.com/meltingice/CamanJ
  */
 package com.meltingice.caman;
 
@@ -7,18 +14,39 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
 /**
- * @author Ryan LeFevre
+ * The main CamanJ class that is interacted with.
  * 
+ * @author Ryan LeFevre
+ * @version 1.0
  */
 public class CamanJ {
+	/**
+	 * The Image object that stores important information about the current
+	 * image loaded with this CamanJ object
+	 */
 	private Image image;
-	private LinkedList<CamanFilter> filters;
+
+	/**
+	 * The render queue of filters
+	 */
+	private Queue<CamanFilter> filters;
+
+	/**
+	 * A flag that says if this image has been rendered or not yet.
+	 */
 	private boolean isRendered = false;
 
+	/**
+	 * Creates a new standard CamanJ object
+	 * 
+	 * @param file
+	 *            The filename of the image to load
+	 */
 	public CamanJ(String file) {
 		try {
 			this.image = new Image(file);
@@ -30,8 +58,10 @@ public class CamanJ {
 	}
 
 	/**
-	 * Lazy-loads a filter using reflection and caches the object instance so
-	 * reflection is only used once per filter.
+	 * Lazy-loads a filter using reflection and adds it to the filter list so
+	 * that it can be executed later. All filters at this time must reside in
+	 * the package com.meltingice.caman.filters. In the future, this will
+	 * support loading from JAR files for easily extensibility.
 	 * 
 	 * @param name
 	 *            The name of the filter to instantiate
@@ -40,6 +70,7 @@ public class CamanJ {
 	 * @throws IllegalAccessException
 	 * @throws ClassNotFoundException
 	 */
+	@SuppressWarnings("rawtypes")
 	private CamanFilter loadFilter(String name) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
 
@@ -52,9 +83,20 @@ public class CamanJ {
 		return plugin;
 	}
 
+	/**
+	 * Loads a filter and returns it so that its parameters (if any) can be set.
+	 * 
+	 * @param name
+	 *            The name of the filter
+	 * @return The filter object
+	 */
 	public CamanFilter filter(String name) {
 		try {
 			CamanFilter plugin = loadFilter(name);
+
+			// Reset the isRendered flag because we've added more filters
+			isRendered = false;
+
 			return plugin;
 		} catch (Exception e) {
 			System.err.println("CamanJ: Invalid filter name");
@@ -63,34 +105,37 @@ public class CamanJ {
 	}
 
 	/**
-	 * Applies a filter with the given name to the image.
-	 * 
-	 * @param name
-	 *            The name of the filter
-	 * @param value
-	 *            The adjustment amount
-	 * @return This object (for chaining purposes)
+	 * Goes through all of the filters (in order) and applies them to the image.
 	 */
 	public void render() {
-		for (CamanFilter filter : filters) {
+		while (!filters.isEmpty()) {
+			CamanFilter filter = filters.remove();
+			filter.precomputeParams();
+
 			for (int i = 0; i < image.getWidth(); i++) {
 				for (int j = 0; j < image.getHeight(); j++) {
 					image.pixels[i][j] = filter.process(image.pixels[i][j]);
 				}
 			}
 		}
+
+		// Set isRendered to true until we add more filters again to prevent
+		// re-rendering the same content
+		isRendered = true;
 	}
 
 	/**
-	 * Saves the modified image to a new BufferedImage object
+	 * Saves the modified image to a new BufferedImage object. Will
+	 * automatically call render() if it has not been called already.
 	 * 
 	 * @return The new BufferedImage object
 	 */
 	public BufferedImage save() {
 		if (!isRendered) {
+			// If the image hasn't been rendered yet, do so first.
 			render();
 		}
-		
+
 		BufferedImage dest = image.getDestImage();
 
 		for (int i = 0; i < image.getWidth(); i++) {
@@ -109,10 +154,6 @@ public class CamanJ {
 	 *            The path to the output file.
 	 */
 	public void save(String outFile) {
-		if (!isRendered) {
-			render();
-		}
-		
 		BufferedImage dest = this.save();
 		File file = new File(outFile);
 		try {
