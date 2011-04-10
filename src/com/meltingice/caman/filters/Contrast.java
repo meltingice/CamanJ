@@ -23,14 +23,22 @@ import com.meltingice.caman.CamanUtil;
  * @version 1.0
  */
 public class Contrast extends CamanFilter {
+	private double arg;
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.meltingice.caman.CamanFilter#precomputeParams()
+	 */
+	@Override
+	public void precomputeParams() {
+		arg = getParamDouble(0);
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see com.meltingice.caman.CamanFilter#process(int[])
 	 */
 	public int[] process(int[] rgb) {
-		Double arg = (Double) params.get(0);
-
 		arg = (arg + 100) / 100;
 		arg = Math.pow(arg, 2);
 

@@ -12,17 +12,14 @@ package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
 import com.meltingice.caman.CamanUtil;
-import com.meltingice.caman.ColorUtil;
 
 /**
- * Adjusts the hue of the image.
- * 
- * Params: (double)
+ * Applies a variable amount of pseudorandom noise to an image.
  * 
  * @author Ryan LeFevre
  * @version 1.0
  */
-public class Hue extends CamanFilter {
+public class Noise extends CamanFilter {
 	private double param;
 
 	/*
@@ -32,7 +29,7 @@ public class Hue extends CamanFilter {
 	 */
 	@Override
 	public void precomputeParams() {
-		param = getParamDouble(0);
+		param = Math.abs(getParamDouble(0)) * 2.55;
 	}
 
 	/*
@@ -42,13 +39,13 @@ public class Hue extends CamanFilter {
 	 */
 	@Override
 	public int[] process(int[] rgb) {
-		double[] hsv = ColorUtil.rgbToHsv(rgb);
-		hsv[0] *= 100;
-		hsv[0] += Math.abs(param);
-		hsv[0] = hsv[0] % 100;
-		hsv[0] /= 100;
-
-		rgb = ColorUtil.hsvToRgb(hsv);
-		return CamanUtil.clampRGB(rgb);
+		double amt = CamanUtil.randomRange(param * -1.0, param);
+		double drgb[] = CamanUtil.toDouble(rgb);
+		
+		drgb[0] += amt;
+		drgb[1] += amt;
+		drgb[2] += amt;
+		
+		return CamanUtil.clampRGB(drgb);
 	}
 }

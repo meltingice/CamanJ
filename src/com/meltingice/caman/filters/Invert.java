@@ -11,38 +11,29 @@
 package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
-import com.meltingice.caman.CamanUtil;
 
 /**
- * Adjusts the brightness of the image
+ * Inverts all colors in the image.
  * 
- * Params: (int)
+ * Params: (void)
  * 
  * @author Ryan LeFevre
  * @version 1.0
  */
-public class Brightness extends CamanFilter {
-	private int param;
+public class Invert extends CamanFilter {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.meltingice.caman.CamanFilter#precomputeParams()
-	 */
-	@Override
-	public void precomputeParams() {
-		param = getParamInt(0);
-	}
-
-	/*
-	 * (non-Javadoc)
+	 * 
 	 * @see com.meltingice.caman.CamanFilter#process(int[])
 	 */
 	@Override
 	public int[] process(int[] rgb) {
-		rgb[0] += param;
-		rgb[1] += param;
-		rgb[2] += param;
+		rgb[0] = 255 - rgb[0];
+		rgb[1] = 255 - rgb[1];
+		rgb[2] = 255 - rgb[2];
 
-		return CamanUtil.clampRGB(rgb);
+		return rgb;
 	}
+
 }

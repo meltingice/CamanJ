@@ -60,6 +60,40 @@ public abstract class CamanFilter {
 	}
 
 	/**
+	 * Retrieves the specified param and forces it to be a double. This avoids
+	 * confusing the user by making some filters requiring doubles with others
+	 * requiring integers.
+	 * 
+	 * @param num
+	 *            The index of the argument
+	 * @return The specified argument as a double
+	 */
+	public double getParamDouble(int num) {
+		try {
+			return (Double) params.get(num);
+		} catch (Exception e) {
+			return ((Integer) params.get(num)).doubleValue();
+		}
+	}
+
+	/**
+	 * Retrieves the specified param and forces it to be an integer. This avoids
+	 * confusing the user by making some filters requiring doubles with others
+	 * requiring integers.
+	 * 
+	 * @param num
+	 *            The index of the argument
+	 * @return The specified argument as an int
+	 */
+	public int getParamInt(int num) {
+		try {
+			return (Integer) params.get(num);
+		} catch (Exception e) {
+			return ((Double) params.get(num)).intValue();
+		}
+	}
+
+	/**
 	 * Allows the filter to precompute any required values before
 	 * {@link CamanFilter#process(int[])} is executed. This helps with speed so
 	 * that arguments don't have to be recomputed for every pixel.

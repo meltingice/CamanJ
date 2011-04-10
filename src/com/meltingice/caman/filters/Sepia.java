@@ -12,17 +12,14 @@ package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
 import com.meltingice.caman.CamanUtil;
-import com.meltingice.caman.ColorUtil;
 
 /**
- * Adjusts the hue of the image.
- * 
- * Params: (double)
+ * Applies a variable strength sepia filter to the image.
  * 
  * @author Ryan LeFevre
  * @version 1.0
  */
-public class Hue extends CamanFilter {
+public class Sepia extends CamanFilter {
 	private double param;
 
 	/*
@@ -32,7 +29,14 @@ public class Hue extends CamanFilter {
 	 */
 	@Override
 	public void precomputeParams() {
-		param = getParamDouble(0);
+		if (params.size() == 0) {
+			param = 1;
+		} else {
+			param = getParamDouble(0) / 100.0;
+			if (param < 0) {
+				param = 0;
+			}
+		}
 	}
 
 	/*
@@ -42,13 +46,17 @@ public class Hue extends CamanFilter {
 	 */
 	@Override
 	public int[] process(int[] rgb) {
-		double[] hsv = ColorUtil.rgbToHsv(rgb);
-		hsv[0] *= 100;
-		hsv[0] += Math.abs(param);
-		hsv[0] = hsv[0] % 100;
-		hsv[0] /= 100;
+		double[] drgb = CamanUtil.toDouble(rgb);
 
-		rgb = ColorUtil.hsvToRgb(hsv);
-		return CamanUtil.clampRGB(rgb);
+		drgb[0] = (drgb[0] * (1 - (0.607 * param)))
+				+ (drgb[1] * (0.769 * param)) + (drgb[2] * (0.189 * param));
+		drgb[1] = (drgb[0] * (0.349 * param))
+				+ (drgb[1] * (1 - (0.314 * param)))
+				+ (drgb[2] * (0.168 * param));
+		drgb[2] = (drgb[0] * (0.272 * param)) + (drgb[1] * (0.534 * param))
+				+ (drgb[2] * (1 - (0.869 * param)));
+
+		return CamanUtil.clampRGB(drgb);
 	}
+
 }

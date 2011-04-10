@@ -12,29 +12,25 @@ package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
 import com.meltingice.caman.CamanUtil;
-import com.meltingice.caman.ColorUtil;
 
 /**
- * Adjusts the hue of the image.
- * 
- * Params: (double)
+ * Clips a color to max values when it falls outside of the specified range.
  * 
  * @author Ryan LeFevre
  * @version 1.0
  */
-public class Hue extends CamanFilter {
-	private double param;
-
+public class Clip extends CamanFilter {
+	private int param;
+	
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.meltingice.caman.CamanFilter#precomputeParams()
 	 */
 	@Override
 	public void precomputeParams() {
-		param = getParamDouble(0);
+		param = (int) (Math.abs(getParamInt(0)) * 2.55);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -42,13 +38,15 @@ public class Hue extends CamanFilter {
 	 */
 	@Override
 	public int[] process(int[] rgb) {
-		double[] hsv = ColorUtil.rgbToHsv(rgb);
-		hsv[0] *= 100;
-		hsv[0] += Math.abs(param);
-		hsv[0] = hsv[0] % 100;
-		hsv[0] /= 100;
-
-		rgb = ColorUtil.hsvToRgb(hsv);
+		for (int i = 0; i < 3; i++) {
+			if (rgb[i] > 255 - param) {
+				rgb[i] = 255;
+			} else if (rgb[i] < param) {
+				rgb[i] = 0;
+			}
+		}
+		
 		return CamanUtil.clampRGB(rgb);
 	}
+
 }

@@ -24,10 +24,25 @@ import com.meltingice.caman.CamanUtil;
  * @version 1.0
  */
 public class Saturation extends CamanFilter {
+	private double arg;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.meltingice.caman.CamanFilter#precomputeParams()
+	 */
+	@Override
+	public void precomputeParams() {
+		arg = getParamDouble(0);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.meltingice.caman.CamanFilter#process(int[])
+	 */
 	@Override
 	public int[] process(int[] rgb) {
-		Double arg = (Double) params.get(0);
 		arg *= -0.01;
 
 		int max = Math.max(Math.max(rgb[0], rgb[1]), rgb[2]);
