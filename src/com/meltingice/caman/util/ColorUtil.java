@@ -105,4 +105,17 @@ public class ColorUtil {
 
 		return new int[] { (int) r, (int) g, (int) b, 255 };
 	}
+	
+	public static int[] hexToRgb(String hex) {
+		if (hex.charAt(0) == '#') {
+			hex = hex.substring(1);
+		}
+		
+		int[] rgb = new int[3];
+		rgb[0] = Integer.parseInt(hex.substring(0, 2), 16);
+		rgb[1] = Integer.parseInt(hex.substring(2, 4), 16);
+		rgb[2] = Integer.parseInt(hex.substring(4, 6), 16);
+		
+		return rgb;
+	}
 }
