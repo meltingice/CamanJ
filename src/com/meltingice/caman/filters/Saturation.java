@@ -34,7 +34,7 @@ public class Saturation extends CamanFilter {
 	 */
 	@Override
 	public void precomputeParams() throws InvalidArgumentsException {
-		arg = getParamDouble(0);
+		arg = getParamDouble(0) * - 0.01;
 	}
 
 	/*
@@ -44,8 +44,6 @@ public class Saturation extends CamanFilter {
 	 */
 	@Override
 	public int[] process(int[] rgb) {
-		arg *= -0.01;
-
 		int max = Math.max(Math.max(rgb[0], rgb[1]), rgb[2]);
 		int diff;
 

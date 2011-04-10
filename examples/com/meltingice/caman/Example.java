@@ -20,6 +20,7 @@ public class Example {
 			.set(new Integer[] {255, 255});*/
 		
 		caman.filter("colorize").set(255).set(192).set(0).set(20);
+		caman.filter("vibrance").set(80);
 
 		caman.save("output/example1.png");
 	}

@@ -113,26 +113,30 @@ public class CamanJ {
 	public void render() {
 		// Benchmarking
 		long start = System.currentTimeMillis();
-		
+
 		while (!filters.isEmpty()) {
 			CamanFilter filter = filters.remove();
-			
+
 			try {
 				filter.precomputeParams();
 			} catch (InvalidArgumentsException e) {
-				System.err.println("CamanJ: invalid arguments given to " + filter.getClass().getName());
+				System.err.println("CamanJ: invalid arguments given to "
+						+ filter.getClass().getName());
 				continue;
 			}
 
 			for (int i = 0; i < image.getWidth(); i++) {
 				for (int j = 0; j < image.getHeight(); j++) {
-					image.pixels[i][j] = filter.process(image.pixels[i][j]);
+					if (filter.type() == PluginType.PIXELWISE) {
+						image.pixels[i][j] = filter.process(image.pixels[i][j]);
+					}
 				}
 			}
 		}
-		
+
 		long end = System.currentTimeMillis();
-		System.out.println("CamanJ: rendering finished in " + (end - start) + "ms");
+		System.out.println("CamanJ: rendering finished in " + (end - start)
+				+ "ms");
 
 		// Set isRendered to true until we add more filters again to prevent
 		// re-rendering the same content

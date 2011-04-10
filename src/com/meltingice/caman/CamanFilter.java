@@ -22,6 +22,7 @@ import com.meltingice.caman.exceptions.InvalidArgumentsException;
  * 
  */
 public abstract class CamanFilter {
+	protected PluginType type = PluginType.PIXELWISE;
 	protected LinkedList<Object> params;
 
 	/**
@@ -102,6 +103,14 @@ public abstract class CamanFilter {
 	 */
 	public void precomputeParams() throws InvalidArgumentsException {
 		// Do nothing by default
+	}
+	
+	/**
+	 * Reports the type of plugin this filter is
+	 * @return The type
+	 */
+	public PluginType type() {
+		return type;
 	}
 
 	/**
