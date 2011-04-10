@@ -10,6 +10,10 @@
  */
 package com.meltingice.caman.util;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import com.meltingice.caman.CamanFilter;
 
 /**
@@ -151,5 +155,12 @@ public class CamanUtil {
 		}
 
 		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T[] reverseArray(T[] arr) {		
+		List<T> list = Arrays.asList(arr);
+		Collections.reverse(list);
+		return (T[]) list.toArray();
 	}
 }
