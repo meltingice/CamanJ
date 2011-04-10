@@ -11,7 +11,8 @@
 package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
-import com.meltingice.caman.CamanUtil;
+import com.meltingice.caman.exceptions.InvalidArgumentsException;
+import com.meltingice.caman.util.CamanUtil;
 
 /**
  * Applies a variable strength sepia filter to the image.
@@ -28,7 +29,7 @@ public class Sepia extends CamanFilter {
 	 * @see com.meltingice.caman.CamanFilter#precomputeParams()
 	 */
 	@Override
-	public void precomputeParams() {
+	public void precomputeParams() throws InvalidArgumentsException {
 		if (params.size() == 0) {
 			param = 1;
 		} else {

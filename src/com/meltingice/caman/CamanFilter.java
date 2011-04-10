@@ -12,6 +12,8 @@ package com.meltingice.caman;
 
 import java.util.LinkedList;
 
+import com.meltingice.caman.exceptions.InvalidArgumentsException;
+
 /**
  * Abstract class for all filters. Override only the methods you need, and the
  * others will automatically throw an InvalidArgument exception.
@@ -98,7 +100,7 @@ public abstract class CamanFilter {
 	 * {@link CamanFilter#process(int[])} is executed. This helps with speed so
 	 * that arguments don't have to be recomputed for every pixel.
 	 */
-	public void precomputeParams() {
+	public void precomputeParams() throws InvalidArgumentsException {
 		// Do nothing by default
 	}
 

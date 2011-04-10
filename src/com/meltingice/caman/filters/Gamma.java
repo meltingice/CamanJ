@@ -11,7 +11,8 @@
 package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
-import com.meltingice.caman.CamanUtil;
+import com.meltingice.caman.exceptions.InvalidArgumentsException;
+import com.meltingice.caman.util.CamanUtil;
 
 /**
  * Applies a gamma adjustment to the image. Values from 0 - 1 will decrease
@@ -28,7 +29,7 @@ public class Gamma extends CamanFilter {
 	 * @see com.meltingice.caman.CamanFilter#precomputeParams()
 	 */
 	@Override
-	public void precomputeParams() {
+	public void precomputeParams() throws InvalidArgumentsException {
 		param = getParamDouble(0);
 	}
 	

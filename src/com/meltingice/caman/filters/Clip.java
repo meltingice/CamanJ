@@ -11,7 +11,8 @@
 package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
-import com.meltingice.caman.CamanUtil;
+import com.meltingice.caman.exceptions.InvalidArgumentsException;
+import com.meltingice.caman.util.CamanUtil;
 
 /**
  * Clips a color to max values when it falls outside of the specified range.
@@ -27,7 +28,7 @@ public class Clip extends CamanFilter {
 	 * @see com.meltingice.caman.CamanFilter#precomputeParams()
 	 */
 	@Override
-	public void precomputeParams() {
+	public void precomputeParams() throws InvalidArgumentsException {
 		param = (int) (Math.abs(getParamInt(0)) * 2.55);
 	}
 	

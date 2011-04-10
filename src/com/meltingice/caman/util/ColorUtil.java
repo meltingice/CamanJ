@@ -8,7 +8,7 @@
  * 
  * Project Home: http://github.com/meltingice/CamanJ
  */
-package com.meltingice.caman;
+package com.meltingice.caman.util;
 
 /**
  * Utility class for color conversion

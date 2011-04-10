@@ -18,6 +18,9 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
+import com.meltingice.caman.exceptions.InvalidArgumentsException;
+import com.meltingice.caman.util.CamanUtil;
+
 /**
  * The main CamanJ class that is interacted with.
  * 
@@ -108,9 +111,18 @@ public class CamanJ {
 	 * Goes through all of the filters (in order) and applies them to the image.
 	 */
 	public void render() {
+		// Benchmarking
+		long start = System.currentTimeMillis();
+		
 		while (!filters.isEmpty()) {
 			CamanFilter filter = filters.remove();
-			filter.precomputeParams();
+			
+			try {
+				filter.precomputeParams();
+			} catch (InvalidArgumentsException e) {
+				System.err.println("CamanJ: invalid arguments given to " + filter.getClass().getName());
+				continue;
+			}
 
 			for (int i = 0; i < image.getWidth(); i++) {
 				for (int j = 0; j < image.getHeight(); j++) {
@@ -118,6 +130,9 @@ public class CamanJ {
 				}
 			}
 		}
+		
+		long end = System.currentTimeMillis();
+		System.out.println("CamanJ: rendering finished in " + (end - start) + "ms");
 
 		// Set isRendered to true until we add more filters again to prevent
 		// re-rendering the same content

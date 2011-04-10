@@ -11,7 +11,8 @@
 package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
-import com.meltingice.caman.CamanUtil;
+import com.meltingice.caman.exceptions.InvalidArgumentsException;
+import com.meltingice.caman.util.CamanUtil;
 
 /**
  * Applies a variable amount of pseudorandom noise to an image.
@@ -28,7 +29,7 @@ public class Noise extends CamanFilter {
 	 * @see com.meltingice.caman.CamanFilter#precomputeParams()
 	 */
 	@Override
-	public void precomputeParams() {
+	public void precomputeParams() throws InvalidArgumentsException {
 		param = Math.abs(getParamDouble(0)) * 2.55;
 	}
 

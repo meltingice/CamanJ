@@ -30,12 +30,26 @@ public class Image {
 
 	public int[][][] pixels;
 
+	/**
+	 * Creates a new Image based on the given filename.
+	 * 
+	 * @param file
+	 *            The filepath to the image to load
+	 * @throws IOException
+	 *             If the image cannot be found or loaded.
+	 */
 	public Image(String file) throws IOException {
 		this.filename = file;
 
 		this.prepare();
 	}
 
+	/**
+	 * Prepares the image by loading it and retrieving its pixel values.
+	 * 
+	 * @throws IOException
+	 *             If the image cannot be read or found.
+	 */
 	private void prepare() throws IOException {
 		image = ImageIO.read(new File(this.filename));
 		pixels = new int[getWidth()][getHeight()][3];
@@ -48,19 +62,45 @@ public class Image {
 		}
 	}
 
+	/**
+	 * Gets the width of the image
+	 * 
+	 * @return the width
+	 */
 	public int getWidth() {
 		return image.getWidth();
 	}
 
+	/**
+	 * Gets the height of the image
+	 * 
+	 * @return the height
+	 */
 	public int getHeight() {
 		return image.getHeight();
 	}
 
+	/**
+	 * Gets the RGB value of an arbitrary pixel in the image specified by pixel
+	 * location.
+	 * 
+	 * @param x
+	 *            The x location of the pixel
+	 * @param y
+	 *            The y location of the pixel
+	 * @return The RGB values of the pixel
+	 */
 	public int getPixelRGB(int x, int y) {
 		return pixels[x][y][3] << 24 | pixels[x][y][0] << 16
 				| pixels[x][y][1] << 8 | pixels[x][y][2];
 	}
 
+	/**
+	 * Returns a writeable BufferedImage that is used to write the rendered
+	 * image into.
+	 * 
+	 * @return A writeable BufferedImage object
+	 */
 	public BufferedImage getDestImage() {
 		ColorModel dCM = image.getColorModel();
 		return new BufferedImage(dCM, dCM.createCompatibleWritableRaster(

@@ -11,7 +11,8 @@
 package com.meltingice.caman.filters;
 
 import com.meltingice.caman.CamanFilter;
-import com.meltingice.caman.CamanUtil;
+import com.meltingice.caman.exceptions.InvalidArgumentsException;
+import com.meltingice.caman.util.CamanUtil;
 
 /**
  * Adjusts the saturation of the image. Negative values will desaturate, while
@@ -32,7 +33,7 @@ public class Saturation extends CamanFilter {
 	 * @see com.meltingice.caman.CamanFilter#precomputeParams()
 	 */
 	@Override
-	public void precomputeParams() {
+	public void precomputeParams() throws InvalidArgumentsException {
 		arg = getParamDouble(0);
 	}
 

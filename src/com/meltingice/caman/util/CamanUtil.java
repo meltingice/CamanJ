@@ -8,7 +8,9 @@
  * 
  * Project Home: http://github.com/meltingice/CamanJ
  */
-package com.meltingice.caman;
+package com.meltingice.caman.util;
+
+import com.meltingice.caman.CamanFilter;
 
 /**
  * Utility class of static methods
@@ -99,12 +101,55 @@ public class CamanUtil {
 
 		return Character.toUpperCase(input.charAt(0)) + input.substring(1);
 	}
-	
+
+	/**
+	 * Returns a pseudorandom double within the given range.
+	 * 
+	 * @param min
+	 *            The minimum inclusive value
+	 * @param max
+	 *            The maximum inclusive value
+	 * @return The pseudorandom value
+	 */
 	public static double randomRange(double min, double max) {
 		return min + (Math.random() * ((max - min) + 1));
 	}
-	
+
+	/**
+	 * Returns a pseudorandom int within the given range.
+	 * 
+	 * @param min
+	 *            The minimum inclusive value
+	 * @param max
+	 *            The maximum inclusive value
+	 * @return The pseudorandom value
+	 */
 	public static int randomRange(int min, int max) {
-		return min + (int)(Math.random() * ((max - min) + 1));
+		return min + (int) (Math.random() * ((max - min) + 1));
+	}
+
+	/**
+	 * Converts a string of channel characters (r, g, or b) to their appropriate
+	 * index in the standard rgb array. In other words, r => 0, g => 1, b => 2
+	 * 
+	 * @param chans
+	 *            A string of color channels
+	 * @return An array of ints representing the color channels given
+	 */
+	public static int[] channelsToIntArray(String chans) {
+		int[] result = new int[chans.length()];
+		for (int i = 0; i < chans.length(); i++) {
+			char c = chans.charAt(i);
+
+			if (c == 'r') {
+				result[i] = 0;
+			} else if (c == 'g') {
+				result[i] = 1;
+			} else if (c == 'b') {
+				result[i] = 2;
+			}
+		}
+
+		return result;
 	}
 }
