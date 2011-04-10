@@ -17,10 +17,12 @@ public class Example {
 			.set(new Integer[] {0, 0})
 			.set(new Integer[] {100, 10})
 			.set(new Integer[] {200, 250})
-			.set(new Integer[] {255, 255});*/
+			.set(new Integer[] {255, 255});
 		
 		caman.filter("colorize").set(255).set(192).set(0).set(20);
-		caman.filter("vibrance").set(80);
+		caman.filter("vibrance").set(80);*/
+		
+		caman.preset("jarques");
 
 		caman.save("output/example1.png");
 	}

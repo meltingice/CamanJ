@@ -196,12 +196,11 @@ public class Bezier {
 		double[] leftCoord = new double[2];
 		double[] rightCoord = new double[2];
 		if (bezier.size() < end[0] + 1) {
-			for (int i = 0; i <= end[0]; i++) {
+			for (int i = start[0]; i <= end[0]; i++) {
 				if (!bezier.containsKey(i)) {
 					// The value to the left will always be defined. We don't
-					// have to worry about
-					// when i = 0 because the starting point is guaranteed (I
-					// think...)
+					// have to worry about when i = 0 because the starting point
+					// is guaranteed (I think...)
 					leftCoord[0] = i - 1;
 					leftCoord[1] = bezier.get(i - 1);
 

@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.meltingice.caman.CamanFilter;
+import com.meltingice.caman.Image;
 
 /**
  * Utility class of static methods
@@ -92,13 +93,13 @@ public class CamanUtil {
 
 	/**
 	 * Given an input string, format it to produce the class name for a filter.
-	 * All it does is capitolize the first letter of the name.
+	 * All it does is capitalize the first letter of the name.
 	 * 
 	 * @param input
 	 *            The filter name
 	 * @return The formatted filter name
 	 */
-	public static String getFilterName(String input) {
+	public static String getClassName(String input) {
 		if (input.length() == 0) {
 			return input;
 		}
@@ -156,11 +157,55 @@ public class CamanUtil {
 
 		return result;
 	}
-	
+
+	/**
+	 * Utility function to reverse an array of any type.
+	 * 
+	 * @param <T>
+	 *            Will be automatically determined from the type of object array
+	 *            given
+	 * @param arr
+	 *            The object array to reverse
+	 * @return The reversed object array
+	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] reverseArray(T[] arr) {		
+	public static <T> T[] reverseArray(T[] arr) {
 		List<T> list = Arrays.asList(arr);
 		Collections.reverse(list);
 		return (T[]) list.toArray();
+	}
+
+	/**
+	 * Generates a convolution kernel from the given image and location.
+	 * 
+	 * @param image
+	 *            The image to retrieve the pixel color values from.
+	 * @param kernelSize
+	 *            The size of the kernel to produce.
+	 * @param x
+	 *            The x coordinate of the kernel.
+	 * @param y
+	 *            The y coordinate of the kernel.
+	 * @return The convolution kernel.
+	 */
+	public static int[][] buildKernel(Image image, int kernelSize, int x, int y) {
+		int[][] kernel = new int[kernelSize][4];
+		int builder = ((int) Math.sqrt(kernelSize) - 1) / 2;
+
+		int builderIndex = 0;
+		for (int j = -builder; j <= builder; j++) {
+			for (int i = -builder; i <= builder; i++) {
+				try {
+					kernel[builderIndex] = image.pixels[x + i][y + j];
+				} catch (Exception e) {
+					// Edge of the image, set all colors to 0
+					kernel[builderIndex] = new int[] { 0, 0, 0, 255 };
+				}
+
+				builderIndex++;
+			}
+		}
+
+		return kernel;
 	}
 }

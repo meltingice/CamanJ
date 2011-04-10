@@ -13,6 +13,7 @@ package com.meltingice.caman;
 import java.util.LinkedList;
 
 import com.meltingice.caman.exceptions.InvalidArgumentsException;
+import com.meltingice.caman.exceptions.InvalidPluginException;
 
 /**
  * Abstract class for all filters. Override only the methods you need, and the
@@ -112,6 +113,10 @@ public abstract class CamanFilter {
 	public PluginType type() {
 		return type;
 	}
+	
+	protected void setType(PluginType type) {
+		this.type = type;
+	}
 
 	/**
 	 * Processes the given pixel and returns the updated values.
@@ -121,6 +126,13 @@ public abstract class CamanFilter {
 	 * 
 	 *            rgb[0] => red, rgb[1] => green, rgb[2] => blue
 	 * @return The updated RGB color values
+	 * @throws InvalidPluginException 
 	 */
-	public abstract int[] process(int[] rgb);
+	public int[] process(int[] rgb) throws InvalidPluginException {
+		throw new InvalidPluginException();
+	}
+	
+	public double[] getKernel() throws InvalidPluginException {
+		throw new InvalidPluginException();
+	}
 }
