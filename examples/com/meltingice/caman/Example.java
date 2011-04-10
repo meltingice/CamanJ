@@ -22,7 +22,7 @@ public class Example {
 		caman.filter("colorize").set(255).set(192).set(0).set(20);
 		caman.filter("vibrance").set(80);*/
 		
-		caman.preset("jarques");
+		caman.filter("gaussianBlur");
 
 		caman.save("output/example1.png");
 	}

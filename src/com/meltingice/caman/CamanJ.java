@@ -87,6 +87,17 @@ public class CamanJ {
 		return plugin;
 	}
 
+	/**
+	 * Lazy loads a preset using reflection. All presets must reside in
+	 * com.meltingice.caman.presets at this point in time.
+	 * 
+	 * @param name
+	 *            The name of the preset to load
+	 * @return The preset
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
 	@SuppressWarnings("rawtypes")
 	private CamanPreset loadPreset(String name) throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
@@ -119,6 +130,12 @@ public class CamanJ {
 		}
 	}
 
+	/**
+	 * Loads and applies a preset set of filters to the current image.
+	 * 
+	 * @param name
+	 *            The name of the preset
+	 */
 	public void preset(String name) {
 		try {
 			CamanPreset preset = loadPreset(name);
@@ -199,11 +216,11 @@ public class CamanJ {
 					// result in a new pixel array (since we don't want to
 					// modify the original pixel array just yet)
 					for (int i = 0; i < kernel.length; i++) {
-						destPixels[x][y][0] += (int) (adjust[i] * (double)kernel[i][0]);
-						destPixels[x][y][1] += (int) (adjust[i] * (double)kernel[i][1]);
-						destPixels[x][y][2] += (int) (adjust[i] * (double)kernel[i][2]);
+						destPixels[x][y][0] += (int) (adjust[i] * (double) kernel[i][0]);
+						destPixels[x][y][1] += (int) (adjust[i] * (double) kernel[i][1]);
+						destPixels[x][y][2] += (int) (adjust[i] * (double) kernel[i][2]);
 					}
-					
+
 					// Lets not worry about the alpha channel right now
 					destPixels[x][y][0] /= divisor;
 					destPixels[x][y][1] /= divisor;

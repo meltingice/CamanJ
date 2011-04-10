@@ -17,10 +17,10 @@ import com.meltingice.caman.exceptions.InvalidPluginException;
 
 /**
  * Abstract class for all filters. Override only the methods you need, and the
- * others will automatically throw an InvalidArgument exception.
+ * others will automatically throw an InvalidPluginException.
  * 
  * @author Ryan LeFevre
- * 
+ * @version 1.0
  */
 public abstract class CamanFilter {
 	protected PluginType type = PluginType.PIXELWISE;
@@ -105,15 +105,16 @@ public abstract class CamanFilter {
 	public void precomputeParams() throws InvalidArgumentsException {
 		// Do nothing by default
 	}
-	
+
 	/**
 	 * Reports the type of plugin this filter is
+	 * 
 	 * @return The type
 	 */
 	public PluginType type() {
 		return type;
 	}
-	
+
 	protected void setType(PluginType type) {
 		this.type = type;
 	}
@@ -126,12 +127,19 @@ public abstract class CamanFilter {
 	 * 
 	 *            rgb[0] => red, rgb[1] => green, rgb[2] => blue
 	 * @return The updated RGB color values
-	 * @throws InvalidPluginException 
+	 * @throws InvalidPluginException
 	 */
 	public int[] process(int[] rgb) throws InvalidPluginException {
 		throw new InvalidPluginException();
 	}
-	
+
+	/**
+	 * If making a filter that requires image convolution, this returns the
+	 * kernel that will be applied to the image.
+	 * 
+	 * @return The convolution matrix
+	 * @throws InvalidPluginException
+	 */
 	public double[] getKernel() throws InvalidPluginException {
 		throw new InvalidPluginException();
 	}

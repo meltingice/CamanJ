@@ -11,9 +11,16 @@
 package com.meltingice.caman;
 
 /**
- * @author ryanlefevre
- *
+ * @author Ryan LeFevre
+ * @version 1.0
  */
 public interface CamanPreset {
+	/**
+	 * Executes the preset so that it can apply whatever filters it needs to the
+	 * current instance of CamanJ.
+	 * 
+	 * @param caman
+	 *            The current instance of CamanJ.
+	 */
 	public void apply(CamanJ caman);
 }
