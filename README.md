@@ -4,11 +4,17 @@ This is an early port of the JS image manipulation library <a href="http://githu
 
 Both suggestions and contributions are welcome!
 
-## Latest Benchmark
+## Latest Benchmarks
 
-* Test System: Macbook Pro with Intel Core i7 2.66Ghz (dual-core with hyperthreading)
-* Test Image Size: 3872x2592
-* Render Time: ~1880ms
+All benchmarks are run against an image of size 3872x2592 using the Example.java program.
+
+### Mac OSX
+* Test CPU: Intel Core i7 2.66GHz (dual-core with hyperthreading)
+* Render time: ~1880ms
+
+### Windows 7
+* Test CPU: Intel Core i7 2.75GHz (quad-core with hyperthreading)
+* Render time: ~1100ms
 
 ## Example Usage
 
