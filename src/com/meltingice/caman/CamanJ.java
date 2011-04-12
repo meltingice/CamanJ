@@ -71,7 +71,7 @@ public class CamanJ {
 	 * @throws IllegalAccessException
 	 * @throws ClassNotFoundException
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	private CamanFilter loadFilter(String name) throws InstantiationException,
 			IllegalAccessException, ClassNotFoundException {
 
@@ -95,7 +95,7 @@ public class CamanJ {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings("unchecked")
 	private CamanPreset loadPreset(String name) throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
 		Class c1 = Class.forName("com.meltingice.caman.presets."
@@ -149,6 +149,8 @@ public class CamanJ {
 	public void render() {
 		CamanRenderer renderer = new CamanRenderer(this.image, this.filters);
 		renderer.render();
+		
+		isRendered = true;
 	}
 
 	/**
