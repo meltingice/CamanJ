@@ -53,7 +53,7 @@ public class CamanUtil {
 		rgb[0] = clampRGB(rgb[0]);
 		rgb[1] = clampRGB(rgb[1]);
 		rgb[2] = clampRGB(rgb[2]);
-		rgb[3] = clampRGB(rgb[3]);
+		//rgb[3] = clampRGB(rgb[3]);
 
 		return rgb;
 	}
@@ -74,7 +74,7 @@ public class CamanUtil {
 		rgb[0] = clampRGB((int) drgb[0]);
 		rgb[1] = clampRGB((int) drgb[1]);
 		rgb[2] = clampRGB((int) drgb[2]);
-		rgb[3] = clampRGB((int) drgb[3]);
+		//rgb[3] = clampRGB((int) drgb[3]);
 
 		return rgb;
 	}
@@ -88,7 +88,7 @@ public class CamanUtil {
 	 */
 	public static double[] toDouble(int[] rgb) {
 		return new double[] { (double) rgb[0], (double) rgb[1],
-				(double) rgb[2], (double) rgb[3] };
+				(double) rgb[2] };
 	}
 
 	/**
@@ -196,7 +196,7 @@ public class CamanUtil {
 		for (int j = -builder; j <= builder; j++) {
 			for (int i = -builder; i <= builder; i++) {
 				try {
-					kernel[builderIndex] = image.pixels[x + i][y + j];
+					kernel[builderIndex] = image.getPixel(x + i, y + j);
 				} catch (Exception e) {
 					// Edge of the image, set all colors to 0
 					kernel[builderIndex] = new int[] { 0, 0, 0, 255 };

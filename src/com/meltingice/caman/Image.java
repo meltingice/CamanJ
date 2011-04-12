@@ -11,7 +11,6 @@
 package com.meltingice.caman;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
 
@@ -28,7 +27,7 @@ public class Image {
 	private String filename;
 	private BufferedImage image;
 
-	public int[][][] pixels;
+	public int[] pixels;
 
 	/**
 	 * Creates a new Image based on the given filename.
@@ -52,14 +51,9 @@ public class Image {
 	 */
 	private void prepare() throws IOException {
 		image = ImageIO.read(new File(this.filename));
-		pixels = new int[getWidth()][getHeight()][3];
-
-		for (int i = 0; i < getWidth(); i++) {
-			for (int j = 0; j < getHeight(); j++) {
-				int[] rgb = getPixelData(i, j);
-				pixels[i][j] = rgb;
-			}
-		}
+		pixels = new int[getWidth() * getHeight()];
+		
+		image.getRGB(0, 0, getWidth(), getHeight(), pixels, 0, getWidth());
 	}
 
 	/**
@@ -91,8 +85,9 @@ public class Image {
 	 * @return The RGB values of the pixel
 	 */
 	public int getPixelRGB(int x, int y) {
-		return pixels[x][y][3] << 24 | pixels[x][y][0] << 16
-				| pixels[x][y][1] << 8 | pixels[x][y][2];
+		int index = xyToIndex(x, y);
+		return pixels[index] << 24 | pixels[index] << 16
+				| pixels[index] << 8 | pixels[index];
 	}
 
 	/**
@@ -102,19 +97,25 @@ public class Image {
 	 * @return A writeable BufferedImage object
 	 */
 	public BufferedImage getDestImage() {
-		ColorModel dCM = image.getColorModel();
-		return new BufferedImage(dCM, dCM.createCompatibleWritableRaster(
-				getWidth(), getHeight()), dCM.isAlphaPremultiplied(), null);
+		image.setRGB(0, 0, getWidth(), getHeight(), pixels, 0, getWidth());
+		return image;
 	}
 
-	private int[] getPixelData(int i, int j) {
-		int rgb = image.getRGB(i, j);
-		int[] result = new int[] { (rgb >> 16) & 0xff, // red
-				(rgb >> 8) & 0xff, // green
-				(rgb) & 0xff, // blue
-				(rgb >> 24) & 0xff // alpha
+	public int[] getPixel(int x, int y) {
+		int index = xyToIndex(x, y);
+		return new int[] {
+				pixels[index] >> 16 & 0xff,
+				pixels[index] >> 8 & 0xff,
+				pixels[index] & 0xff
 		};
-
-		return result;
+	}
+	
+	public void setPixel(int x, int y, int[] rgb) {
+		int index = xyToIndex(x, y);
+		pixels[index] = 0xff000000 | (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
+	}
+	
+	private int xyToIndex(int x, int y) {
+		return y * getWidth() + x;
 	}
 }
